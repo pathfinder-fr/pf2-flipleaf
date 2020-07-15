@@ -1,0 +1,38 @@
+﻿@page "/{**path}"
+@using FlipLeaf
+@inject FlipLeaf.FlipLeafSettings settings
+@model FlipLeaf.Pages._Render.IndexModel
+
+@{
+    Layout = "_Layout";
+    DateTimeOffset? lastModified = null;
+
+    //var name = (string)Model.Items["Name"];
+
+}
+
+<div id="PageHeaderDiv">
+    <h1 class="pagetitle">
+        @Model.Title
+    </h1>
+</div>
+
+<div id="PageContentDiv">
+    @Html.Raw(Model.Html)
+</div>
+
+<footer style="clear: both">
+    <a asp-page="/_manage/edit" asp-route-path="@Model.Path">Modifier</a>
+    −
+    <a asp-page="/_manage/browse" asp-route-path="@Model.ManagePath">Administration</a>
+    −
+    @if (lastModified != null)
+    {
+        <text>Dernière mise à jour <span title="@lastModified">@lastModified.ToRelativeTime()</span></text>
+    }
+    else if (Model.LastUpdate != DateTimeOffset.MinValue)
+    {
+        <text>Dernière mise à jour <span title="@Model.LastUpdate">@Model.LastUpdate.ToRelativeTime()</span></text>
+    }
+
+</footer>
